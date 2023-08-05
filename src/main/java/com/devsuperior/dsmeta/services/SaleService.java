@@ -3,6 +3,7 @@ package com.devsuperior.dsmeta.services;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.devsuperior.dsmeta.dto.ReportMinDTO;
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
+import com.devsuperior.dsmeta.dto.SumaryMinDTO;
 import com.devsuperior.dsmeta.entities.Sale;
 import com.devsuperior.dsmeta.repositories.SaleRepository;
 
@@ -29,7 +31,7 @@ public class SaleService {
 	}
 	
 	
-	public Page<ReportMinDTO> report (String minDate, String maxDate, String sellerName, Pageable pageable){
+	public Page<ReportMinDTO> getReport (String minDate, String maxDate, String sellerName, Pageable pageable){
 		
 		LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
 		
@@ -39,11 +41,20 @@ public class SaleService {
 		Page<Sale> result = repository.searchSales(min, max, sellerName, pageable);
 		
 		return result.map(x -> new ReportMinDTO(x));
-		
-		
 	}
 	
 	
+	public List<SumaryMinDTO> getSumary (String minDate, String maxDate){
+		
+		LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
+		
+		LocalDate endDate = maxDate.equals("") ? today : LocalDate.parse(maxDate);
+		LocalDate startDate = minDate.equals("") ? endDate.minusYears(1L) : LocalDate.parse(minDate);
+		
+		List<SumaryMinDTO> result = repository.sumarySale(startDate, endDate);
+		
+		return result;
+	}
 	
 	
 }
