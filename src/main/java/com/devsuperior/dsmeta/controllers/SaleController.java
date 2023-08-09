@@ -41,6 +41,17 @@ public class SaleController {
 		return ResponseEntity.ok(report);
 	}
 	
+	@GetMapping(value = "/reportsql")
+	public ResponseEntity<Page<ReportMinDTO>> getReportProjection(
+			@RequestParam(name="minDate", defaultValue="") String minDate, 
+			@RequestParam(name="maxDate", defaultValue="") String maxDate,
+			@RequestParam(name="name", defaultValue="") String name,
+			Pageable pageable) {
+		
+		Page<ReportMinDTO> report = service.getProjectionReport(minDate, maxDate, name, pageable);
+		return ResponseEntity.ok(report);
+	}
+	
 
 
 	@GetMapping(value = "/summary")
@@ -50,5 +61,14 @@ public class SaleController {
 		
 		List<SumaryMinDTO> sumary = service.getSumary(minDate, maxDate);
 		return ResponseEntity.ok(sumary);
+	}
+	
+	
+	@GetMapping(value = "/summarysql")
+	public ResponseEntity<List<SumaryMinDTO>> getSumaryProjection(
+			@RequestParam(name="minDate", defaultValue="") String minDate, 
+			@RequestParam(name="maxDate", defaultValue="") String maxDate) {
+		List<SumaryMinDTO> report = service.getProjectionSumary(minDate, maxDate);
+		return ResponseEntity.ok(report);
 	}
 }
