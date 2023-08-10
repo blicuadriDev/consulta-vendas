@@ -13,7 +13,7 @@ public class SumaryMinDTO {
 	}
 	
 	public SumaryMinDTO(SumaryMinProjection projection) {
-		sellerName = projection.getSellerName();
+		sellerName = projection.getName();
 		total = projection.getTotal();
 	}
 	

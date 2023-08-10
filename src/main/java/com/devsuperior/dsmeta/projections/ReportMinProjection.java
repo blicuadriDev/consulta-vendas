@@ -7,6 +7,6 @@ public interface ReportMinProjection {
 	Long getId();
 	Double getAmount();
 	LocalDate getDate();
-	String getSellerName();
+	String getName();
 
 }

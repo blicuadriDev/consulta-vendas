@@ -24,11 +24,17 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 	Page<Sale> jpqlReport1 (LocalDate min, LocalDate max, String sellerName, Pageable pageable);
 
 	
+	
 	@Query(nativeQuery = true, value = "SELECT tb_sales.id, tb_sales.date, tb_sales.amount, tb_seller.name "
 			+"FROM tb_sales "
 			+"INNER JOIN tb_seller ON tb_sales.seller_id = tb_seller.id "
 			+"WHERE tb_sales.date BETWEEN :min AND :max "
-			+"AND UPPER (tb_seller.name) LIKE UPPER(CONCAT('%', :sellerName, '%')) ")
+			+"AND UPPER (tb_seller.name) LIKE UPPER(CONCAT('%', :sellerName, '%')) ",
+			countQuery = "SELECT COUNT(tb_sales.id) "
+					+ "FROM tb_sales "
+					+ "INNER JOIN tb_seller ON tb_sales.seller_id = tb_seller.id "
+					+ "WHERE tb_sales.date BETWEEN :min AND :max "
+					+ "AND UPPER (tb_seller.name) LIKE UPPER(CONCAT('%', :sellerName, '%'))" )
 	Page<ReportMinProjection> sqlReport1 (LocalDate min, LocalDate max, String sellerName, Pageable pageable);
 	
 	
@@ -61,11 +67,11 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 	
 	
 	// **********JAH EH OTIMIZADA**********
-	@Query(nativeQuery = true, value ="SELECT tb_seller.name, SUM(tb_sales.amount) "
+	@Query(nativeQuery = true, value ="SELECT tb_seller.name, SUM(tb_sales.amount) as total "
 		+ "FROM tb_sales "
 		+ "INNER JOIN tb_seller ON tb_sales.seller_id = tb_seller.id "
 		+ "WHERE tb_sales.date BETWEEN :start AND :end "
-		+ "GROUP BY tb_sales.seller.name ")
+		+ "GROUP BY tb_seller.name ")
 	List<SumaryMinProjection> sqlSumary1(LocalDate start, LocalDate end);
 
 }

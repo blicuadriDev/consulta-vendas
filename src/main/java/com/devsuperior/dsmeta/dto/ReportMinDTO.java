@@ -31,7 +31,7 @@ public class ReportMinDTO {
 		id = projection.getId();
 		date = projection.getDate();
 		amount = projection.getAmount();
-		sellerName = projection.getSellerName();
+		sellerName = projection.getName();
 	}
 
 

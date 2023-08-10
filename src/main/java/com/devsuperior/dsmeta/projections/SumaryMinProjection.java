@@ -2,7 +2,7 @@ package com.devsuperior.dsmeta.projections;
 
 public interface SumaryMinProjection {
 	
-	String getSellerName();
+	String getName();
 	Double getTotal();
 
 }
